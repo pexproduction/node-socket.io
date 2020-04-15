@@ -42,6 +42,11 @@ io.sockets.on('connection', function(socket) {
         socket.broadcast.emit ('playerMoved', data);
     });
   
+      socket.on ('streamCommand', function (data) {
+
+        socket.broadcast.emit ('commandSent', data);
+    });
+  
     socket.on('disconnect',function(){
         if(!players[socket.id]) return;
         delete players[socket.id];

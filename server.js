@@ -44,7 +44,7 @@ io.sockets.on('connection', function(socket) {
   
       socket.on ('streamCommand', function (data) {
 
-        socket.broadcast.emit ('commandSent', data);
+        io.emit ('commandSent', data);
     });
   
     socket.on('disconnect',function(){

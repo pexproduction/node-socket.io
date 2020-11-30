@@ -1,58 +1,31 @@
-'use strict';
+var express = require('express')
+var fs = require('fs')
+var app = express()
 
-const express = require('express');
-const socketIO = require('socket.io');
+app.use(express.bodyParser())
 
-const PORT = process.env.PORT || 3000;
-const INDEX = '/index.html';
+app.get('/', function(request, response) {
+  console.log('GET /')
+  var html = `
+    <html>
+        <body>
+            <form method="post" action="http://localhost:3000">Name: 
+                <input type="text" name="name" />
+                <input type="submit" value="Submit" />
+            </form>
+        </body>
+    </html>`
+  response.writeHead(200, {'Content-Type': 'text/html'})
+  response.end(html)
+})
 
-const server = express()
-  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
-  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+app.post('/', function(request, response) {
+  console.log('POST /')
+  console.dir(request.body)
+  response.writeHead(200, {'Content-Type': 'text/html'})
+  response.end('thanks')
+})
 
-const io = socketIO(server);
-
-var players = {};
-
-function Player (id) {
-    this.id = id;
-    this.x = 0;
-    this.y = 0;
-    this.z = 0;
-    this.entity = null;
-}
-
-io.sockets.on('connection', function(socket) {
-
-  socket.on ('initialize', function () {
-            var id = socket.id;
-            var newPlayer = new Player (id);
-            players[id] = newPlayer;
-
-            socket.emit ('playerData', {id: id, players: players});
-            socket.broadcast.emit ('playerJoined', newPlayer);
-    });
-
-    socket.on ('positionUpdate', function (data) {
-            if(!players[data.id]) return;
-            players[data.id].x = data.x;
-            players[data.id].y = data.y;
-            players[data.id].z = data.z;
-
-        socket.broadcast.emit ('playerMoved', data);
-    });
-  
-      socket.on ('streamCommand', function (data) {
-
-        io.emit ('commandSent', data);
-    });
-  
-    socket.on('disconnect',function(){
-        if(!players[socket.id]) return;
-        delete players[socket.id];
-        // Update clients with the new player killed 
-        socket.broadcast.emit('killPlayer',socket.id);
-      })
-});
-
-setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
+port = process.env.PORT
+app.listen(port)
+console.log(`Listening at http://localhost:${port}`)

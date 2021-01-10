@@ -9,4 +9,4 @@ port = process.env.PORT
 
 
 var server = http.createServer(app);
-server.listen(PORT, () => console.log(`Server is on port ${PORT}`))
+server.listen(port, () => console.log(`Server is on port ${port}`))

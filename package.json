@@ -13,9 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express" : "*",
-    "pusher" : "*",
-    "socket.io" : "*",
-    "body-parser" : "*"
+    "express" : "*"
   }
 }

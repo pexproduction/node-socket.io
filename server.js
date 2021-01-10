@@ -12,6 +12,11 @@ io.on('connection', (socket) => {
   socket.on('userMessage', msg => {
     io.emit('userMessage', msg);
   });
+  
+socket.on('cRoom', function (room) {
+  socket.join(room);
+});
+  
 });
 
 http.listen(port, () => {

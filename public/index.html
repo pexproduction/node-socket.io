@@ -40,6 +40,22 @@
      if (urlpath.length === 8){
          console.log("Room: "+urlpath)
          socket.emit('cRoom', urlpath);
+        
+        var ns = io('/'+urlpath); // ordinarily set dynamically in JavaScript, somehow
+
+        ns.on('message', function(data) {
+          console.log('Message received: ' + data);
+        });
+
+        document.querySelector('body').addEventListener('click', function(e) {
+          console.log('Body was clicked');
+          // the `send()` method is essentially shorthand for `emit('message', data)`;
+          // that is, the `send()` method emits the `message` event for us:
+          ns.send('Someone clicked the body element');
+        });
      }
+        
+
+        
     </script>
 

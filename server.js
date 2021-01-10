@@ -1,8 +1,9 @@
 var express = require('express')
 var fs = require('fs')
 var app = express()
+var bodyParser = require('body-parser')
 
-app.use(express.bodyParser())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.get('/', function(request, response) {
   console.log('GET /')

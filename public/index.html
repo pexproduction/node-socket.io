@@ -1,19 +1,4 @@
-<body>
-    
-    <div id="container">
-        <button onclick="createroom()">Create Room</button>
-            
-        <div id="rooms">
-            
-        </div>
-        
-    </div>
-    
-    
-    
-    
-    
-    
+
     
     
 <!DOCTYPE html>
@@ -21,18 +6,39 @@
   <title>Pusher Test</title>
   <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
   <script>
-
+        var urlpath = window.location.pathname.split('/').slice(-1)[0]
+        console.log(urlpath)
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
+              function randomString(length, chars) {
+            var result = '';
+            for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+            return result;
+        }
+        function createroom(){
+
+             var roomID = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+            window.location.href = "/"+roomID
+            
+
+        }
+      
+     if (urlpath.length === 8){
+         console.log("Room: "+urlpath)
     var pusher = new Pusher('0f14fe42808b976da029', {
       cluster: 'us2'
     });
 
-    var channel = pusher.subscribe('my-channel');
+    var channel = pusher.subscribe(urlpath);
     channel.bind('my-event', function(data) {
       alert(JSON.stringify(data));
     });
+     
+     
+     }
+      
+
   </script>
 </head>
 <body>
@@ -41,63 +47,19 @@
     Try publishing an event to channel <code>my-channel</code>
     with event name <code>my-event</code>.
   </p>
+
+  
+      <div id="container">
+        <button onclick="createroom()">Create Room</button>
+            
+        <div id="rooms">
+            
+        </div>
+        
+    </div>
+  
+
 </body>
     
-    
-    
-    
-    
-    
-    
-    
-    
-</body>
-    <script src="/socket.io/socket.io.js"></script>
 
-    <script>
-        var urlpath = window.location.pathname.split('/').slice(-1)[0]
-        console.log(urlpath)
-      var socket = io();
-
-
-      socket.on('userMessage', function(msg) {
-        console.log(msg)
-      });
-
-        function randomString(length, chars) {
-            var result = '';
-            for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-            return result;
-        }
-
-        
-        function createroom(){
-
-             var roomID = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-            window.location.href = "/"+roomID
-            
-
-        }
-            
-     if (urlpath.length === 8){
-         console.log("Room: "+urlpath)
-         socket.emit('cRoom', urlpath);
-        
-        var ns = io('/'+urlpath); // ordinarily set dynamically in JavaScript, somehow
-
-        ns.on('message', function(data) {
-          console.log('Message received: ' + data);
-        });
-
-        document.querySelector('body').addEventListener('click', function(e) {
-          console.log('Body was clicked');
-          // the `send()` method is essentially shorthand for `emit('message', data)`;
-          // that is, the `send()` method emits the `message` event for us:
-          ns.send('Someone clicked the body element');
-        });
-     }
-        
-
-        
-    </script>
 

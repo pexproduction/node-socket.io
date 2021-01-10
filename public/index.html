@@ -1,16 +1,41 @@
-
+<body>
+    
+    <div id="container">
+        <button onclick="createroom()">Create Room</button>
+            
+        <div id="rooms">
+            
+        </div>
+        
+    </div>
+    
+</body>
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
+        var urlpath = window.location.pathname.split('/').slice(-1)[0]
+        console.log("urlpath")
       var socket = io();
 
 
       socket.on('userMessage', function(msg) {
         console.log(msg)
       });
+
+        function randomString(length, chars) {
+            var result = '';
+            for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+            return result;
+        }
+
         
-        
-        
+        function createroom(){
+
+             var roomID = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+            window.location.href = "/"+roomID
+
+        }
+            
      
     </script>
 

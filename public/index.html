@@ -2,6 +2,15 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
+      var socket = io();
 
+
+      socket.on('userMessage', function(msg) {
+        console.log(msg)
+      });
+        
+        
+        
+     
     </script>
 

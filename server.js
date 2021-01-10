@@ -6,6 +6,7 @@ app.use(express.static('public'))
 var io = require('socket.io').listen(server);
 
 port = process.env.PORT
-app.listen(port)
+
 
 var server = http.createServer(app);
+server.listen(PORT, () => console.log(`Server is on port ${PORT}`))

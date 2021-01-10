@@ -10,7 +10,7 @@ app.get('/', function(request, response) {
   var html = `
     <html>
         <body>
-            <form method="post" action="http://localhost:3000">Name: 
+            <form method="post" action="#">Name: 
                 <input type="text" name="name" />
                 <input type="submit" value="Submit" />
             </form>

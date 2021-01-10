@@ -5,20 +5,9 @@ var bodyParser = require('body-parser')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.get('/', function(request, response) {
-  console.log('GET /')
-  var html = `
-    <html>
-        <body>
-            <form method="post" action="#">Name: 
-                <input type="text" name="name" />
-                <input type="submit" value="Submit" />
-            </form>
-        </body>
-    </html>`
-  response.writeHead(200, {'Content-Type': 'text/html'})
-  response.end(html)
-})
+app.get('/',function(req,res) {
+  res.sendFile('index.html');
+});
 
 app.post('/', function(request, response) {
   console.log('POST /')

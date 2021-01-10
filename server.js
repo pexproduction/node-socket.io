@@ -9,17 +9,23 @@ app.get('/*', (req, res) => {
 });
 
 
-const namespaces = io.of(/^\/[a-z]{8}$/);
 
-namespaces.on('connection', function(socket) {
-  const namespace = socket.nsp;
+io.on('connection', function(socket){
 
-  socket.emit('message', `Successfully connected on namespace: ${namespace.name}`);
+  var room = socket.handshake['query']['r_var'];
 
-  socket.on('message', function(data) {
-    console.log('A message was received from a client: ', data);
-    socket.broadcast.emit('message', data);
+  socket.join(room);
+  console.log('user joined room #'+room);
+
+  socket.on('disconnect', function() {
+    socket.leave(room)
+    console.log('user disconnected');
   });
+
+  socket.on('chat message', function(msg){
+    io.to(room).emit('chat message', msg);
+  });
+
 });
 
 http.listen(port, () => {

@@ -8,15 +8,18 @@ app.get('/*', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-io.on('connection', (socket) => {
-  socket.on('userMessage', msg => {
-    io.emit('userMessage', msg);
+
+const namespaces = io.of(/^\/[a-z]{8}$/);
+
+namespaces.on('connection', function(socket) {
+  const namespace = socket.nsp;
+
+  socket.emit('message', `Successfully connected on namespace: ${namespace.name}`);
+
+  socket.on('message', function(data) {
+    console.log('A message was received from a client: ', data);
+    socket.broadcast.emit('message', data);
   });
-  
-socket.on('cRoom', function (room) {
-  socket.join(room);
-});
-  
 });
 
 http.listen(port, () => {

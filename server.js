@@ -5,15 +5,8 @@ var bodyParser = require('body-parser')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.get('/',function(req,res) {
-  res.sendFile('index.html');
-});
-
-app.post('/', function(request, response) {
-  console.log('POST /')
-  console.dir(request.body)
-  response.writeHead(200, {'Content-Type': 'text/html'})
-  response.end('thanks')
+app.get('/index.html', function (req, res) {
+   res.sendFile( __dirname + "/" + "index.html" );
 })
 
 port = process.env.PORT

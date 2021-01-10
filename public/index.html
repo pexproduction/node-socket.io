@@ -33,9 +33,13 @@
 
              var roomID = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
             window.location.href = "/"+roomID
+            
 
         }
             
-     
+     if (urlpath.length === 8){
+         console.log("Room: "+urlpath)
+         socket.emit('cRoom', urlpath);
+     }
     </script>
 
